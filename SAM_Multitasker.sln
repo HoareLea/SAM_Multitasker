@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SAM_Multitasker", "SAM_Mult
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Grasshopper", "Grasshopper", "{5A9CD84D-24B3-40BD-A993-78F6C04B2E0A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAM.Analytical.Multitasker", "SAM_Multitasker\SAM.Analytical.Multitasker\SAM.Analytical.Multitasker.csproj", "{B62F564C-072B-4088-8EFB-2CF9146F5609}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,12 +21,17 @@ Global
 		{78AF5CEA-E96A-496D-BDB1-A64629D0659C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78AF5CEA-E96A-496D-BDB1-A64629D0659C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78AF5CEA-E96A-496D-BDB1-A64629D0659C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B62F564C-072B-4088-8EFB-2CF9146F5609}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B62F564C-072B-4088-8EFB-2CF9146F5609}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B62F564C-072B-4088-8EFB-2CF9146F5609}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B62F564C-072B-4088-8EFB-2CF9146F5609}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{78AF5CEA-E96A-496D-BDB1-A64629D0659C} = {306B553C-0881-42DD-8074-1252D62C62B6}
+		{B62F564C-072B-4088-8EFB-2CF9146F5609} = {306B553C-0881-42DD-8074-1252D62C62B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {660015E8-D301-481F-9FA7-1D12BE8DE824}
