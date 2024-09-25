@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SAM.Core.Multitasker", "SAM_Multitasker\SAM.Core.Multitasker\SAM.Core.Multitasker.csproj", "{78AF5CEA-E96A-496D-BDB1-A64629D0659C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SAM_Multitasker", "SAM_Multitasker", "{306B553C-0881-42DD-8074-1252D62C62B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Grasshopper", "Grasshopper", "{5A9CD84D-24B3-40BD-A993-78F6C04B2E0A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{78AF5CEA-E96A-496D-BDB1-A64629D0659C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78AF5CEA-E96A-496D-BDB1-A64629D0659C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78AF5CEA-E96A-496D-BDB1-A64629D0659C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78AF5CEA-E96A-496D-BDB1-A64629D0659C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{78AF5CEA-E96A-496D-BDB1-A64629D0659C} = {306B553C-0881-42DD-8074-1252D62C62B6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {660015E8-D301-481F-9FA7-1D12BE8DE824}
+	EndGlobalSection
+EndGlobal
