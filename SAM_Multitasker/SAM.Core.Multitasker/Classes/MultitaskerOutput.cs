@@ -1,4 +1,4 @@
-﻿namespace SAM.Core.Multitasker.Classes
+﻿namespace SAM.Core.Multitasker
 {
     public class MultitaskerOutput
     {

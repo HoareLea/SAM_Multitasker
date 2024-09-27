@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SAM.Core.Multitasker.Classes
+namespace SAM.Core.Multitasker
 {
     public class MultitaskerInput
     {

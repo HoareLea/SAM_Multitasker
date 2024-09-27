@@ -1,15 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.CodeAnalysis;
+using System.Collections.Generic;
 
-namespace SAM.Core.Multitasker.Classes
+namespace SAM.Core.Multitasker
 {
     public class MultitaskerResults
     {
+        private List<Diagnostic> diagnostics;
         private List<MultitaskerResult> multitaskerResults;
 
 
-        public MultitaskerResults()
+        public MultitaskerResults(IEnumerable<Diagnostic> diagnostics)
         {
             multitaskerResults = null;
+            this.diagnostics = diagnostics == null ? null : new List<Diagnostic> (diagnostics);
         }
 
         public MultitaskerResults(IEnumerable<MultitaskerResult> multitaskerResults)
@@ -21,7 +24,15 @@ namespace SAM.Core.Multitasker.Classes
         {
             get
             {
-                return multitaskerResults != null && multitaskerResults.Count > 0;
+                return diagnostics == null || diagnostics.Count == 0;
+            }
+        }
+
+        public List<Diagnostic> Diagnostics
+        {
+            get
+            {
+                return diagnostics;
             }
         }
     }

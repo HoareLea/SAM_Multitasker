@@ -1,8 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
-using SAM.Core.Multitasker;
-using SAM.Core.Multitasker.Classes;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -10,7 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace SAM.Multitasker
+namespace SAM.Core.Multitasker
 {
     public class Multitasker
     {
@@ -24,26 +22,29 @@ namespace SAM.Multitasker
             this.multitaskerMode = multitaskerMode;
         }
 
-        public async Task<MultitaskerResults> Run(IEnumerable<MultitaskerInput> multitaskerInputs)
+        public async Task<MultitaskerResults> Run(IEnumerable<MultitaskerInput> multitaskerInputs = null)
         {
-            if (code == null || scriptOptions == null || multitaskerInputs == null)
+            if (code == null || scriptOptions == null)
             {
                 return default;
             }
 
             HashSet<string> names = new HashSet<string>();
-            foreach(MultitaskerInput multitaskerInput in multitaskerInputs)
+            if(multitaskerInputs != null)
             {
-                if(multitaskerInput.Variables != null)
+                foreach(MultitaskerInput multitaskerInput in multitaskerInputs)
                 {
-                    foreach(string name in multitaskerInput.Variables.Keys)
+                    if(multitaskerInput.Variables != null)
                     {
-                        if(names.Contains(name))
+                        foreach(string name in multitaskerInput.Variables.Keys)
                         {
-                            continue;
-                        }
+                            if(names.Contains(name))
+                            {
+                                continue;
+                            }
 
-                        code = code.Replace(string.Format("[{0}]", name), string.Format(@"Variables[""{0}""]", name));
+                            code = code.Replace(string.Format("[{0}]", name), string.Format(@"Variables[""{0}""]", name));
+                        }
                     }
                 }
             }
@@ -54,7 +55,7 @@ namespace SAM.Multitasker
             ImmutableArray<Diagnostic> immutableArray = script.Compile();
             if(immutableArray.Length != 0)
             {
-                return new MultitaskerResults();
+                return new MultitaskerResults(immutableArray);
             }
 
             Func<MultitaskerInput, Task<MultitaskerResult>> func = async (x) => 
@@ -66,7 +67,7 @@ namespace SAM.Multitasker
 
                 try
                 {
-                    @object = await script.RunAsync(x);
+                    @object = await script.RunAsync(globals: x);
                     succedded = true;
                 }
                 catch (CompilationErrorException compilationErrorException_Temp)
@@ -80,6 +81,12 @@ namespace SAM.Multitasker
 
                 return new MultitaskerResult(x, succedded ? new MultitaskerOutput(@object) : null, compilationErrorException);
             };
+
+            if(multitaskerInputs == null || multitaskerInputs.Count() == 0)
+            {
+                MultitaskerResult multitaskerResult = await func.Invoke(null);
+                return new MultitaskerResults(new MultitaskerResult[] { multitaskerResult });
+            }
 
             List<MultitaskerResult> multitaskerResults = Enumerable.Repeat<MultitaskerResult>(null, multitaskerInputs.Count()).ToList();
 
@@ -108,9 +115,25 @@ namespace SAM.Multitasker
                 return;
             }
 
+            List<Assembly> assemblies_Temp = new List<Assembly>();
+            foreach(Assembly assembly in assemblies)
+            {
+                if(assembly == null || assembly.IsDynamic)
+                {
+                    continue;
+                }
+
+                assemblies_Temp.Add(assembly);  
+            }
+
+            if(assemblies_Temp.Count == 0)
+            {
+                return;
+            }
+
             //.AddReferences(Assembly.Load("System.Runtime"))  // Reference system libraries
             //.AddReferences(Assembly.Load("Newtonsoft.Json"))  // Reference external libraries
-            scriptOptions = scriptOptions.AddReferences(assemblies);
+            scriptOptions = scriptOptions.AddReferences(assemblies_Temp);
         }
 
         public void AddImports(params string[] imports)
