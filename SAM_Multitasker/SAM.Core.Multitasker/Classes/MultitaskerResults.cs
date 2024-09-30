@@ -35,5 +35,29 @@ namespace SAM.Core.Multitasker
                 return diagnostics;
             }
         }
+
+        public List<T> GetOutputs<T>()
+        {
+            if (multitaskerResults == null)
+            {
+                return null;
+            }
+
+            List<T> result = new List<T>();
+            foreach (MultitaskerResult multitaskerResult in multitaskerResults)
+            {
+                object @object = multitaskerResult.MultitaskerOutput.Result;
+                if(@object is T)
+                {
+                    result.Add((T)@object);
+                }
+                else if(Query.TryConvert(@object, out T t))
+                {
+                    result.Add((T)@object);
+                }
+            }
+
+            return result;
+        }
     }
 }

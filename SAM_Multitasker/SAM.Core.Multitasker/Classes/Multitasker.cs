@@ -10,8 +10,15 @@ using System.Threading.Tasks;
 
 namespace SAM.Core.Multitasker
 {
+    //class Globals
+    //{
+    //    public Dictionary<string, object> Variables { get; set; }
+    //}
+
     public class Multitasker
     {
+
+
         private string code;
         private ScriptOptions scriptOptions = ScriptOptions.Default;
         private MultitaskerMode multitaskerMode = MultitaskerMode.Series;
@@ -50,7 +57,7 @@ namespace SAM.Core.Multitasker
             }
 
 
-            Script<object> script = CSharpScript.Create(code, scriptOptions);
+            Script<object> script = CSharpScript.Create(code, scriptOptions, typeof(MultitaskerInput));
 
             ImmutableArray<Diagnostic> immutableArray = script.Compile();
             if(immutableArray.Length != 0)
@@ -61,25 +68,32 @@ namespace SAM.Core.Multitasker
             Func<MultitaskerInput, Task<MultitaskerResult>> func = async (x) => 
             {
                 object @object = null;
-                CompilationErrorException compilationErrorException = null;
+                Exception exception = null;
 
                 bool succedded = false;
 
                 try
                 {
-                    @object = await script.RunAsync(globals: x);
+                    //Globals globals = new Globals();
+                    //globals.Variables = x.Variables;
+
+                    ScriptState<object> scriptState = await script.RunAsync(globals: x);
+                    if(scriptState != null)
+                    {
+                        @object = scriptState.ReturnValue;
+                        if (scriptState.Exception != null)
+                        {
+                            exception = scriptState.Exception;
+                        }
+                    }
                     succedded = true;
                 }
-                catch (CompilationErrorException compilationErrorException_Temp)
+                catch (Exception exception_Temp)
                 {
-                    compilationErrorException = compilationErrorException_Temp;
-                }
-                catch (Exception exception)
-                {
-
+                    exception = exception_Temp;
                 }
 
-                return new MultitaskerResult(x, succedded ? new MultitaskerOutput(@object) : null, compilationErrorException);
+                return new MultitaskerResult(x, succedded ? new MultitaskerOutput(@object) : null, exception);
             };
 
             if(multitaskerInputs == null || multitaskerInputs.Count() == 0)
