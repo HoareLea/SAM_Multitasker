@@ -13,7 +13,7 @@ namespace SAM.Core.Multitasker
         public MultitaskerVariable(string name, object value)
         {
             this.name = name;
-            valueType = Query.ValueType(value);
+            valueType = Core.Query.ValueType(value);
             this.value = value;
         }
 
@@ -28,7 +28,7 @@ namespace SAM.Core.Multitasker
             this.name = name;
             this.valueType = valueType;
             
-            if(valueType == ValueType.Undefined || (value != null && valueType == Query.ValueType(value)))
+            if(valueType == ValueType.Undefined || (value != null && valueType == Core.Query.ValueType(value)))
             {
                 this.value = value;
             }
@@ -75,7 +75,7 @@ namespace SAM.Core.Multitasker
 
         public T GetObject<T>()
         {
-            if (Query.TryConvert(value, out T result))
+            if (Core.Query.TryConvert(value, out T result))
             {
                 return result;
             }
@@ -97,7 +97,7 @@ namespace SAM.Core.Multitasker
 
             if (jObject.ContainsKey("ValueType"))
             {
-                valueType = Query.Enum<ValueType>(jObject.Value<string>("Name"));
+                valueType = Core.Query.Enum<ValueType>(jObject.Value<string>("Name"));
             }
 
             if(jObject.ContainsKey("Value"))
@@ -106,49 +106,49 @@ namespace SAM.Core.Multitasker
                 switch(valueType)
                 {
                     case ValueType.String:
-                        if(Query.TryConvert(value, out string @string))
+                        if(Core.Query.TryConvert(value, out string @string))
                         {
                             value = @string;
                         }
                         break;
 
                     case ValueType.Boolean:
-                        if (Query.TryConvert(value, out bool @bool))
+                        if (Core.Query.TryConvert(value, out bool @bool))
                         {
                             value = @bool;
                         }
                         break;
 
                     case ValueType.IJSAMObject:
-                        if (Query.TryConvert(value, out IJSAMObject jSAMObject))
+                        if (Core.Query.TryConvert(value, out IJSAMObject jSAMObject))
                         {
                             value = jSAMObject;
                         }
                         break;
 
                     case ValueType.Integer:
-                        if (Query.TryConvert(value, out int @int))
+                        if (Core.Query.TryConvert(value, out int @int))
                         {
                             value = @int;
                         }
                         break;
 
                     case ValueType.Double:
-                        if (Query.TryConvert(value, out double @double))
+                        if (Core.Query.TryConvert(value, out double @double))
                         {
                             value = @double;
                         }
                         break;
 
                     case ValueType.Guid:
-                        if (Query.TryConvert(value, out Guid guid))
+                        if (Core.Query.TryConvert(value, out Guid guid))
                         {
                             value = guid;
                         }
                         break;
 
                     case ValueType.DateTime:
-                        if (Query.TryConvert(value, out DateTime dateTime))
+                        if (Core.Query.TryConvert(value, out DateTime dateTime))
                         {
                             value = dateTime;
                         }
@@ -157,7 +157,7 @@ namespace SAM.Core.Multitasker
                     case ValueType.Undefined:
                         if(value is JObject)
                         {
-                            IJSAMObject jSAMObject_Undefined = Query.IJSAMObject(jObject);
+                            IJSAMObject jSAMObject_Undefined = Core.Query.IJSAMObject(jObject);
                             if (jSAMObject_Undefined != null)
                             {
                                 value = jSAMObject_Undefined;
@@ -176,7 +176,7 @@ namespace SAM.Core.Multitasker
         public JObject ToJObject()
         {
             JObject result = new JObject();
-            result.Add("_type", Query.FullTypeName(this));
+            result.Add("_type", Core.Query.FullTypeName(this));
 
             ValueType valueType = ValueType;
             result.Add("ValueType", valueType.ToString());
@@ -187,35 +187,35 @@ namespace SAM.Core.Multitasker
                 switch (valueType)
                 {
                     case ValueType.Boolean:
-                        if (Query.TryConvert(Value, out bool @bool))
+                        if (Core.Query.TryConvert(Value, out bool @bool))
                         {
                             value = @bool;
                         }
                         break;
 
                     case ValueType.Color:
-                        if (Query.TryConvert(Value, out Color color))
+                        if (Core.Query.TryConvert(Value, out Color color))
                         {
                             value = new SAMColor(color).ToJObject();
                         }
                         break;
 
                     case ValueType.DateTime:
-                        if (Query.TryConvert(Value, out DateTime dateTime))
+                        if (Core.Query.TryConvert(Value, out DateTime dateTime))
                         {
                             value = dateTime;
                         }
                         break;
 
                     case ValueType.Double:
-                        if (Query.TryConvert(Value, out double @double))
+                        if (Core.Query.TryConvert(Value, out double @double))
                         {
                             value = @double;
                         }
                         break;
 
                     case ValueType.Guid:
-                        if (Query.TryConvert(Value, out Guid @guid))
+                        if (Core.Query.TryConvert(Value, out Guid @guid))
                         {
                             value = @guid;
                         }
@@ -226,14 +226,14 @@ namespace SAM.Core.Multitasker
                         break;
 
                     case ValueType.Integer:
-                        if (Query.TryConvert(Value, out int @int))
+                        if (Core.Query.TryConvert(Value, out int @int))
                         {
                             value = @int;
                         }
                         break;
 
                     case ValueType.String:
-                        if (Query.TryConvert(Value, out string @string))
+                        if (Core.Query.TryConvert(Value, out string @string))
                         {
                             value = @string;
                         }

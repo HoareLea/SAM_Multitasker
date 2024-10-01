@@ -77,7 +77,7 @@ namespace SAM.Core.Multitasker
         public JObject ToJObject()
         {
             JObject result = new JObject();
-            result.Add("_type", Query.FullTypeName(this));
+            result.Add("_type", Core.Query.FullTypeName(this));
 
             if(multitaskerVariables != null)
             {

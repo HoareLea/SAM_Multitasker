@@ -46,12 +46,12 @@ namespace SAM.Core.Multitasker
             List<T> result = new List<T>();
             foreach (MultitaskerResult multitaskerResult in multitaskerResults)
             {
-                object @object = multitaskerResult.MultitaskerOutput.Result;
+                object @object = multitaskerResult?.MultitaskerOutput?.Result;
                 if(@object is T)
                 {
                     result.Add((T)@object);
                 }
-                else if(Query.TryConvert(@object, out T t))
+                else if(Core.Query.TryConvert(@object, out T t))
                 {
                     result.Add((T)@object);
                 }

@@ -57,6 +57,7 @@ namespace SAM.Core.Grasshopper.Multitasker
                 Param_String param_String;
 
                 param_String = new Param_String() { Name = "_name_", NickName = "_name_", Description = "Input name", Access = GH_ParamAccess.item, Optional = true };
+                param_String.SetPersistentData(Core.Multitasker.Name.DefaultMultitaskerInput);
                 result.Add(new GH_SAMParam(param_String, ParamVisibility.Binding));
 
                 param_String = new Param_String() { Name = "_valueType_", NickName = "_valueType_", Description = "ValueType", Access = GH_ParamAccess.item, Optional = true };
@@ -94,7 +95,7 @@ namespace SAM.Core.Grasshopper.Multitasker
             index = Params.IndexOfInputParam("_name_");
             if (index == -1 || !dataAccess.GetData(index, ref name) || string.IsNullOrEmpty(name))
             {
-                name = "Value";
+                name = Core.Multitasker.Name.DefaultMultitaskerInput;
             }
 
             GH_ObjectWrapper gH_ObjectWrapper = null;

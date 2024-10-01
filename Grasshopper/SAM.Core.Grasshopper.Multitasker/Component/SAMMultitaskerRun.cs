@@ -53,8 +53,8 @@ namespace SAM.Core.Grasshopper.Multitasker
 
                 Param_String param_String = null;
 
-                param_String = new Param_String() { Name = "_script", NickName = "_script", Description = "Script", Access = GH_ParamAccess.item };
-                result.Add(new GH_SAMParam(param_String, ParamVisibility.Binding));
+                GooScriptParam gooScriptParam = new GooScriptParam() { Name = "_script", NickName = "_script", Description = "Script", Access = GH_ParamAccess.item };
+                result.Add(new GH_SAMParam(gooScriptParam, ParamVisibility.Binding));
 
 
                 param_String = new Param_String() { Name = "_multitaskerMode_", NickName = "_multitaskerMode_", Description = "Multitasker Mode", Access = GH_ParamAccess.item, Optional = true };
@@ -107,7 +107,7 @@ namespace SAM.Core.Grasshopper.Multitasker
             }
 
 
-            string script = null;
+            Script script = null;
             index = Params.IndexOfInputParam("_script");
             if (index == -1 || !dataAccess.GetData(index, ref script) || string.IsNullOrEmpty(script))
             {

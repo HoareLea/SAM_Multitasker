@@ -11,39 +11,34 @@ using System.Windows.Forms;
 
 namespace SAM.Core.Grasshopper.Multitasker
 {
-    public class GooMultitaskerInput : GooJSAMObject<MultitaskerInput>
+    public class GooScript : GooJSAMObject<Script>
     {
-        public GooMultitaskerInput()
+        public GooScript()
             : base()
         {
         }
 
-        public GooMultitaskerInput(MultitaskerInput multitaskerInput)
-            : base(multitaskerInput)
+        public GooScript(Script script)
+            : base(script)
         {
         }
 
         public override IGH_Goo Duplicate()
         {
-            return new GooMultitaskerInput(Value);
+            return new GooScript(Value);
         }
 
         public override bool CastFrom(object source)
         {
             object @object = source;
-            if (@object is IGH_Goo)
+            if(@object is IGH_Goo)
             {
                 @object = ((dynamic)@object).Value;
             }
-
-            if (@object is MultitaskerInput)
+            
+            if(@object is string)
             {
-                Value = new MultitaskerInput((MultitaskerInput)@object);
-                return true;
-            }
-            else
-            {
-                Value = new MultitaskerInput(Name.DefaultMultitaskerInput, @object);
+                Value = new Script((string)@object);
                 return true;
             }
 
@@ -52,9 +47,9 @@ namespace SAM.Core.Grasshopper.Multitasker
 
         public override bool CastTo<Y>(ref Y target)
         {
-            if (typeof(Y) == typeof(MultitaskerInput))
+            if(typeof(Y) == typeof(string))
             {
-                target = (Y)(object)Value;
+                target = (Y)(object)Value.Code;
             }
 
             return base.CastTo(ref target);
@@ -64,28 +59,28 @@ namespace SAM.Core.Grasshopper.Multitasker
         {
             get
             {
-                return Value == null ? typeof(MultitaskerInput).Name : Value.GetType().Name;
+                return Value == null ? typeof(GooScript).Name : Value.GetType().Name;
             }
         }
     }
 
-    public class GooMultitaskerInputParam : GH_PersistentParam<GooMultitaskerInput>
+    public class GooScriptParam : GH_PersistentParam<GooScript>
     {
-        public override Guid ComponentGuid => new Guid("fdac916f-3e4f-4df6-8029-ea950823b4e8");
+        public override Guid ComponentGuid => new Guid("400a16f6-a61d-4848-a9d6-6f0ade098ba3");
 
         protected override Bitmap Icon => new Bitmap(new MemoryStream(Resources.SAM_Small));
 
-        public GooMultitaskerInputParam()
-            : base("MultitaskerInput", "MultitaskerInput", "SAM Multitasker MultitaskerInput", "Params", "SAM")
+        public GooScriptParam()
+            : base("Script", "Script", "SAM Script", "Params", "SAM")
         {
         }
 
-        protected override GH_GetterResult Prompt_Plural(ref List<GooMultitaskerInput> values)
+        protected override GH_GetterResult Prompt_Plural(ref List<GooScript> values)
         {
             throw new NotImplementedException();
         }
 
-        protected override GH_GetterResult Prompt_Singular(ref GooMultitaskerInput value)
+        protected override GH_GetterResult Prompt_Singular(ref GooScript value)
         {
             throw new NotImplementedException();
         }

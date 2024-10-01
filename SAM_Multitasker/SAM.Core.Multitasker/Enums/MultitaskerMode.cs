@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.ComponentModel;
 
 namespace SAM.Core.Multitasker
 {
+    [Description("Multitasker Mode")]
     public enum MultitaskerMode
     {
-        Parallel,
-        Series
+        [Description("Parallel")] Parallel,
+        [Description("Series")] Series
     }
 }

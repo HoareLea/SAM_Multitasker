@@ -10,15 +10,8 @@ using System.Threading.Tasks;
 
 namespace SAM.Core.Multitasker
 {
-    //class Globals
-    //{
-    //    public Dictionary<string, object> Variables { get; set; }
-    //}
-
     public class Multitasker
     {
-
-
         private string code;
         private ScriptOptions scriptOptions = ScriptOptions.Default;
         private MultitaskerMode multitaskerMode = MultitaskerMode.Series;
@@ -56,7 +49,6 @@ namespace SAM.Core.Multitasker
                 }
             }
 
-
             Script<object> script = CSharpScript.Create(code, scriptOptions, typeof(MultitaskerInput));
 
             ImmutableArray<Diagnostic> immutableArray = script.Compile();
@@ -74,9 +66,6 @@ namespace SAM.Core.Multitasker
 
                 try
                 {
-                    //Globals globals = new Globals();
-                    //globals.Variables = x.Variables;
-
                     ScriptState<object> scriptState = await script.RunAsync(globals: x);
                     if(scriptState != null)
                     {
