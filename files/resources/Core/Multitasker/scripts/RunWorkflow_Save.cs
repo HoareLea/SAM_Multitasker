@@ -48,7 +48,7 @@ if(true)
 	
 	string json = SAM.Core.Convert.ToString(analyticalModel);
 	json = json == null ? string.Empty : json;
-	System.IO.File.WriteAllText(path_Json, json)
+	System.IO.File.WriteAllText(path_Json, json);
 }
 
 return true;
