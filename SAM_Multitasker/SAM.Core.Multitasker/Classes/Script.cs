@@ -1,6 +1,5 @@
 ﻿
 using Newtonsoft.Json.Linq;
-using SAM.Geometry.Planar;
 using System;
 
 namespace SAM.Core.Multitasker

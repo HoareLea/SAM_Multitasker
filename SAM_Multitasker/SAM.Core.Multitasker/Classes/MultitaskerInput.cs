@@ -5,7 +5,7 @@ namespace SAM.Core.Multitasker
 {
     public class MultitaskerInput : IJSAMObject
     {
-        public List<MultitaskerVariable> multitaskerVariables;
+        public Dictionary<string, MultitaskerVariable> dictionary;
 
         public MultitaskerInput()
         {
@@ -16,15 +16,30 @@ namespace SAM.Core.Multitasker
         {
             if(multitaskerInput != null)
             {
-                if(multitaskerInput.multitaskerVariables != null)
+                if(multitaskerInput.dictionary != null)
                 {
-                    multitaskerVariables = new List<MultitaskerVariable>();
-                    foreach(MultitaskerVariable multitaskerVariable in multitaskerVariables)
+                    dictionary = new Dictionary<string, MultitaskerVariable>();
+                    foreach (MultitaskerVariable multitaskerVariable in multitaskerInput.dictionary.Values)
                     {
                         if(multitaskerVariable != null)
                         {
-                            multitaskerVariables.Add(new MultitaskerVariable(multitaskerVariable));
+                            Add(new MultitaskerVariable(multitaskerVariable));
                         }
+                    }
+                }
+            }
+        }
+
+        public MultitaskerInput(IEnumerable<MultitaskerVariable> multitaskerVariables)
+        {
+            if(multitaskerVariables != null)
+            {
+                dictionary = new Dictionary<string, MultitaskerVariable>();
+                foreach (MultitaskerVariable multitaskerVariable in multitaskerVariables)
+                {
+                    if(string.IsNullOrWhiteSpace(multitaskerVariable?.Name))
+                    {
+                        dictionary[multitaskerVariable.Name] = multitaskerVariable;
                     }
                 }
             }
@@ -32,25 +47,41 @@ namespace SAM.Core.Multitasker
 
         public MultitaskerInput(string name, object value)
         {
-            multitaskerVariables = new List<MultitaskerVariable>();
+            dictionary = new Dictionary<string, MultitaskerVariable>();
             if(name != null)
             {
-                multitaskerVariables.Add(new MultitaskerVariable(name, value));
+                dictionary[name] = new MultitaskerVariable(name, value);
             }
         }
 
         public MultitaskerInput(string name, ValueType valueType, object value)
         {
-            multitaskerVariables = new List<MultitaskerVariable>();
+            dictionary = new Dictionary<string, MultitaskerVariable>();
             if (name != null)
             {
-                multitaskerVariables.Add(new MultitaskerVariable(name, valueType, value));
+                dictionary[name] = new MultitaskerVariable(name, valueType, value);
             }
         }
 
         public MultitaskerInput(JObject jObject)
         {
             FromJObject(jObject);   
+        }
+
+        public bool Add(MultitaskerVariable multitaskerVariable)
+        {
+            if(string.IsNullOrWhiteSpace(multitaskerVariable?.Name))
+            {
+                return false;
+            }
+
+            if(dictionary == null)
+            {
+                dictionary = new Dictionary<string, MultitaskerVariable>();
+            }
+
+            dictionary[multitaskerVariable.Name] = multitaskerVariable;
+            return true;
         }
 
         public bool FromJObject(JObject jObject)
@@ -62,12 +93,12 @@ namespace SAM.Core.Multitasker
 
             if (jObject.ContainsKey("MultitaskerVariables"))
             {
-                multitaskerVariables = new List<MultitaskerVariable>();
+                dictionary = new Dictionary<string, MultitaskerVariable>();
 
                 JArray jArray = jObject.Value<JArray>("MultitaskerVariables");
                 foreach(JObject jObject_MultitaskerVariable in jArray)
                 {
-                    multitaskerVariables.Add(new MultitaskerVariable(jObject_MultitaskerVariable));
+                    Add(new MultitaskerVariable(jObject_MultitaskerVariable));
                 }
             }
 
@@ -79,11 +110,11 @@ namespace SAM.Core.Multitasker
             JObject result = new JObject();
             result.Add("_type", Core.Query.FullTypeName(this));
 
-            if(multitaskerVariables != null)
+            if(dictionary != null)
             {
                 JArray jArray = new JArray();
 
-                foreach(MultitaskerVariable multitaskerVariable in multitaskerVariables)
+                foreach(MultitaskerVariable multitaskerVariable in dictionary.Values)
                 {
                     if(multitaskerVariable == null)
                     {
@@ -103,13 +134,13 @@ namespace SAM.Core.Multitasker
         {
             get
             {
-                if(multitaskerVariables == null)
+                if(dictionary == null)
                 {
                     return null;
                 }
 
                 Dictionary<string, dynamic> result = new Dictionary<string, dynamic>();
-                foreach(MultitaskerVariable multitaskerVariable in multitaskerVariables)
+                foreach(MultitaskerVariable multitaskerVariable in dictionary.Values)
                 {
                     if(string.IsNullOrWhiteSpace(multitaskerVariable.Name))
                     {

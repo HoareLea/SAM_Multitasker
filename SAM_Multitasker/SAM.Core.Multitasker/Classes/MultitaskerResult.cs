@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis.Scripting;
-using System;
+﻿using System;
 
 namespace SAM.Core.Multitasker
 {

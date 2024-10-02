@@ -1,5 +1,4 @@
-﻿using SAM.Core;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace SAM.Core.Multitasker
 {

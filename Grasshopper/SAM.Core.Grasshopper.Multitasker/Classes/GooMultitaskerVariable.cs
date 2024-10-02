@@ -11,21 +11,21 @@ using System.Windows.Forms;
 
 namespace SAM.Core.Grasshopper.Multitasker
 {
-    public class GooMultitaskerInput : GooJSAMObject<MultitaskerInput>
+    public class GooMultitaskerVariable : GooJSAMObject<MultitaskerVariable>
     {
-        public GooMultitaskerInput()
+        public GooMultitaskerVariable()
             : base()
         {
         }
 
-        public GooMultitaskerInput(MultitaskerInput multitaskerInput)
-            : base(multitaskerInput)
+        public GooMultitaskerVariable(MultitaskerVariable multitaskerVariable)
+            : base(multitaskerVariable)
         {
         }
 
         public override IGH_Goo Duplicate()
         {
-            return new GooMultitaskerInput(Value);
+            return new GooMultitaskerVariable(Value);
         }
 
         public override bool CastFrom(object source)
@@ -36,14 +36,14 @@ namespace SAM.Core.Grasshopper.Multitasker
                 @object = ((dynamic)@object).Value;
             }
 
-            if (@object is MultitaskerInput)
+            if (@object is MultitaskerVariable)
             {
-                Value = new MultitaskerInput((MultitaskerInput)@object);
+                Value = new MultitaskerVariable((MultitaskerVariable)@object);
                 return true;
             }
             else
             {
-                Value = new MultitaskerInput(Name.DefaultMultitaskerVariable, @object);
+                Value = new MultitaskerVariable(Name.DefaultMultitaskerVariable, @object);
                 return true;
             }
 
@@ -52,7 +52,7 @@ namespace SAM.Core.Grasshopper.Multitasker
 
         public override bool CastTo<Y>(ref Y target)
         {
-            if (typeof(Y) == typeof(MultitaskerInput))
+            if (typeof(Y) == typeof(MultitaskerVariable))
             {
                 target = (Y)(object)Value;
             }
@@ -64,28 +64,28 @@ namespace SAM.Core.Grasshopper.Multitasker
         {
             get
             {
-                return Value == null ? typeof(MultitaskerInput).Name : Value.GetType().Name;
+                return Value == null ? typeof(MultitaskerVariable).Name : Value.GetType().Name;
             }
         }
     }
 
-    public class GooMultitaskerInputParam : GH_PersistentParam<GooMultitaskerInput>
+    public class GooMultitaskerVariableParam : GH_PersistentParam<GooMultitaskerVariable>
     {
-        public override Guid ComponentGuid => new Guid("fdac916f-3e4f-4df6-8029-ea950823b4e8");
+        public override Guid ComponentGuid => new Guid("e2a46e73-b05f-427a-9c51-f6340f9fd98f");
 
         protected override Bitmap Icon => new Bitmap(new MemoryStream(Resources.SAM_Small));
 
-        public GooMultitaskerInputParam()
-            : base("MultitaskerInput", "MultitaskerInput", "SAM Multitasker MultitaskerInput", "Params", "SAM")
+        public GooMultitaskerVariableParam()
+            : base("MultitaskerVariable", "MultitaskerVariable", "SAM Multitasker MultitaskerVariable", "Params", "SAM")
         {
         }
 
-        protected override GH_GetterResult Prompt_Plural(ref List<GooMultitaskerInput> values)
+        protected override GH_GetterResult Prompt_Plural(ref List<GooMultitaskerVariable> values)
         {
             throw new NotImplementedException();
         }
 
-        protected override GH_GetterResult Prompt_Singular(ref GooMultitaskerInput value)
+        protected override GH_GetterResult Prompt_Singular(ref GooMultitaskerVariable value)
         {
             throw new NotImplementedException();
         }

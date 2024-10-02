@@ -7,9 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace SAM.Core.Grasshopper.Multitasker
 {
@@ -51,17 +48,7 @@ namespace SAM.Core.Grasshopper.Multitasker
             {
                 List<GH_SAMParam> result = new List<GH_SAMParam>();
 
-                Param_GenericObject param_GenericObject = new Param_GenericObject() { Name = "value_", NickName = "value_", Description = "Value", Access = GH_ParamAccess.item, Optional = true };
-                result.Add(new GH_SAMParam(param_GenericObject, ParamVisibility.Binding));
-
-                Param_String param_String;
-
-                param_String = new Param_String() { Name = "_name_", NickName = "_name_", Description = "Input name", Access = GH_ParamAccess.item, Optional = true };
-                param_String.SetPersistentData(Core.Multitasker.Name.DefaultMultitaskerInput);
-                result.Add(new GH_SAMParam(param_String, ParamVisibility.Binding));
-
-                param_String = new Param_String() { Name = "_valueType_", NickName = "_valueType_", Description = "ValueType", Access = GH_ParamAccess.item, Optional = true };
-                result.Add(new GH_SAMParam(param_String, ParamVisibility.Voluntary));
+                result.Add(new GH_SAMParam(new GooMultitaskerVariableParam() { Name = "multitaskerVariables_", NickName = "multitaskerVariables_", Description = "SAM Multitasker multitaskerVariable list", Access = GH_ParamAccess.list, Optional = true }, ParamVisibility.Binding));
 
                 return result.ToArray();
             }
@@ -91,43 +78,23 @@ namespace SAM.Core.Grasshopper.Multitasker
         {
             int index = -1;
 
-            string name = null;
-            index = Params.IndexOfInputParam("_name_");
-            if (index == -1 || !dataAccess.GetData(index, ref name) || string.IsNullOrEmpty(name))
-            {
-                name = Core.Multitasker.Name.DefaultMultitaskerInput;
-            }
+            List<MultitaskerVariable> multitaskerVariables = null;
 
-            GH_ObjectWrapper gH_ObjectWrapper = null;
-            index = Params.IndexOfInputParam("value_");
-            if (index == -1 || !dataAccess.GetData(index, ref gH_ObjectWrapper))
+            index = Params.IndexOfInputParam("multitaskerVariables_");
+            if (index == -1)
             {
-                gH_ObjectWrapper = null;
-            }
+                multitaskerVariables = new List<MultitaskerVariable>();
 
-            object value = gH_ObjectWrapper?.Value;
-            if (value is IGH_Goo)
-            {
-                value = (value as dynamic).Value;
-            }
-
-            ValueType? valueType = null;
-
-            string valueTypeString = null;
-            index = Params.IndexOfInputParam("_valueType_");
-            if (index == -1 || !dataAccess.GetData(index, ref valueTypeString) || string.IsNullOrEmpty(valueTypeString))
-            {
-                valueType = null;
-            }
-            else if(!string.IsNullOrWhiteSpace(valueTypeString))
-            {
-                valueType = Core.Query.Enum<ValueType>(valueTypeString);
+                if(!dataAccess.GetDataList(index, multitaskerVariables) || multitaskerVariables == null || multitaskerVariables.Count == 0)
+                {
+                    multitaskerVariables = null;
+                }
             }
 
             index = Params.IndexOfOutputParam("multitaskerInput");
             if (index != -1)
             {
-                MultitaskerInput multitaskerInput = valueType == null || !valueType.HasValue ? new MultitaskerInput(name, value) : new MultitaskerInput(name, valueType.Value, value);
+                MultitaskerInput multitaskerInput = new MultitaskerInput(multitaskerVariables);
 
                 dataAccess.SetData(index, multitaskerInput);
             }
