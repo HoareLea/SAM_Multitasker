@@ -14,7 +14,7 @@ string path_TBD = System.IO.Path.Combine(directoryName, fileName + ".tbd");
 AnalyticalModel analyticalModel = SAM.Core.Convert.ToSAM<AnalyticalModel>(path).FirstOrDefault();
 if(analyticalModel == null)
 {
-    return null;
+    return false;
 }
 
 string path_gbXML = System.IO.Path.Combine(directoryName, fileName + ".xml");
@@ -42,4 +42,13 @@ WorkflowSettings workflowSettings = new WorkflowSettings()
 
 analyticalModel = SAM.Analytical.Tas.Modify.RunWorkflow(analyticalModel, workflowSettings);
 
-return analyticalModel;
+if([Save])
+{
+	string path_Json =  System.IO.Path.Combine(directoryName, fileName + "_Done" + ".json");
+	
+	string json = SAM.Core.Convert.ToString(analyticalModel);
+	json = json == null ? string.Empty : json;
+	System.IO.File.WriteAllText(path_Json, json)
+}
+
+return true;
