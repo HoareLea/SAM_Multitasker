@@ -37,7 +37,7 @@ namespace SAM.Core.Multitasker
                 dictionary = new Dictionary<string, MultitaskerVariable>();
                 foreach (MultitaskerVariable multitaskerVariable in multitaskerVariables)
                 {
-                    if(string.IsNullOrWhiteSpace(multitaskerVariable?.Name))
+                    if(!string.IsNullOrWhiteSpace(multitaskerVariable?.Name))
                     {
                         dictionary[multitaskerVariable.Name] = multitaskerVariable;
                     }

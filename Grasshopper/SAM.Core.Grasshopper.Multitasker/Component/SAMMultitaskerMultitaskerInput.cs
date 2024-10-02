@@ -81,7 +81,7 @@ namespace SAM.Core.Grasshopper.Multitasker
             List<MultitaskerVariable> multitaskerVariables = null;
 
             index = Params.IndexOfInputParam("multitaskerVariables_");
-            if (index == -1)
+            if (index != -1)
             {
                 multitaskerVariables = new List<MultitaskerVariable>();
 
