@@ -12,11 +12,19 @@ string directoryName = System.IO.Path.GetDirectoryName(path);
 string path_TBD = System.IO.Path.Combine(directoryName, fileName + ".tbd");
 
 AnalyticalModel analyticalModel = SAM.Core.Convert.ToSAM<AnalyticalModel>(path).FirstOrDefault();
+if(analyticalModel == null)
+{
+    return null;
+}
+
+string path_gbXML = System.IO.Path.Combine(directoryName, fileName + ".xml");
+
+SAM.Analytical.gbXML.Create.gbXML(analyticalModel, path_gbXML, SAM.Core.Tolerance.MacroDistance, 0.00001);
 
 WorkflowSettings workflowSettings = new WorkflowSettings()
 {
     Path_TBD = path_TBD,
-    Path_gbXML = null,
+    Path_gbXML = path_gbXML,
     WeatherData = null,
     DesignDays_Heating = null,
     DesignDays_Cooling = null,

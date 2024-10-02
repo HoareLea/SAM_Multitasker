@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 
 namespace SAM.Core.Multitasker
@@ -33,6 +34,14 @@ namespace SAM.Core.Multitasker
             get
             {
                 return diagnostics;
+            }
+        }
+
+        public List<Exception> Exceptions
+        {
+            get
+            {
+                return multitaskerResults?.ConvertAll(x => x.Exception).FindAll(x => x != null);
             }
         }
 

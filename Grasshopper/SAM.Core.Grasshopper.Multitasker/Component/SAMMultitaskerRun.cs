@@ -131,35 +131,53 @@ namespace SAM.Core.Grasshopper.Multitasker
 
             string[] names = new string[] { "System.Runtime", "Newtonsoft.Json" };
 
+            string[] paths = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "*.dll"); 
+
             List<Assembly> assemblies = new List<Assembly>();
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach(string path in paths)
             {
+                if(!Path.GetFileNameWithoutExtension(path).StartsWith("SAM"))
+                {
+                    continue;
+                }
+
+                Assembly assembly = Assembly.LoadFrom(path);
                 if(assembly == null || assembly.IsDynamic)
                 {
                     continue;
                 }
 
-                string name = assembly.GetName().Name;
-                if(string.IsNullOrWhiteSpace(name))
-                {
-                    continue;
-                }
-
-                if(!name.StartsWith("SAM"))
-                {
-                    if(names.Contains(name))
-                    {
-
-                    }
-                    else
-                    {
-
-                        continue;
-                    }
-                }
-
                 assemblies.Add(assembly);
             }
+
+            //foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            //{
+            //    if(assembly == null || assembly.IsDynamic)
+            //    {
+            //        continue;
+            //    }
+
+            //    string name = assembly.GetName().Name;
+            //    if(string.IsNullOrWhiteSpace(name))
+            //    {
+            //        continue;
+            //    }
+
+            //    if(!name.StartsWith("SAM"))
+            //    {
+            //        if(names.Contains(name))
+            //        {
+
+            //        }
+            //        else
+            //        {
+
+            //            continue;
+            //        }
+            //    }
+
+            //    assemblies.Add(assembly);
+            //}
 
             multitasker.AddReferences(assemblies?.ToArray());
 
@@ -187,7 +205,11 @@ namespace SAM.Core.Grasshopper.Multitasker
                     index = Params.IndexOfOutputParam("errors");
                     if (index != -1)
                     {
-                        dataAccess.SetDataList(index, multitaskerResults.Diagnostics?.ConvertAll(x => x.GetMessage()));
+                        List<string> messages = new List<string>();
+                        multitaskerResults?.Exceptions?.ForEach(x => messages.Add(x.Message));
+                        multitaskerResults?.Diagnostics?.ForEach(x => messages.Add(x.GetMessage()));
+
+                        dataAccess.SetDataList(index, messages);
                     }
 
                     index = Params.IndexOfOutputParam("outputs");
