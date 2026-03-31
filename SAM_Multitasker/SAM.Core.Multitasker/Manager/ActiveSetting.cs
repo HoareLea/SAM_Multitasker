@@ -1,10 +1,15 @@
-﻿using System.Reflection;
+﻿// SPDX-License-Identifier: LGPL-3.0-or-later
+// Copyright (c) 2020–2026 Michal Dengusiak & Jakub Ziolkowski and contributors
+
+using System.Reflection;
 
 namespace SAM.Core.Multitasker
 {
     public static partial class ActiveSetting
     {
         private static Setting setting = null;
+
+        private static readonly object settingLock = new ();
 
         private static Setting Load()
         {
@@ -21,9 +26,9 @@ namespace SAM.Core.Multitasker
         {
             get
             {
-                if(setting == null)
+                lock (settingLock)
                 {
-                    setting = Load();
+                    setting ??= Load();
                 }
 
                 return setting;
@@ -32,7 +37,7 @@ namespace SAM.Core.Multitasker
 
         public static Setting GetDefault()
         {
-            Setting result = new Setting(Assembly.GetExecutingAssembly());
+            Setting result = new (Assembly.GetExecutingAssembly());
 
             ////File Names
             //result.SetValue(AnalyticalSettingParameter.DefaultMaterialLibraryFileName, "SAM_MaterialLibrary.JSON");
